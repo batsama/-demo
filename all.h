@@ -1,0 +1,11 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+#include<string.h>
+#include<windows.h>
+#include"menu.h"
+#include"loding.h"
+#include"Login.h"
+#include"Logup.h"
+#include"account.h"
+#include"student.h"
