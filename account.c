@@ -292,9 +292,9 @@ Code* rewiteCode(Code* pHead)//修改指定账户的信息
 				_getch();
 				return pHead;
 			}
-			if (l == 11)
+			if (l == 12)
 			{ 
-				AC_munu();
+				return pHead;
 			}
 		}
 	}

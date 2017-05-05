@@ -165,7 +165,6 @@ void saveCode(Code* pHead) //保存注册信息到文件中
 		fprintf(p,"账号:%s 密码:%s 权限:%d\n",pTemp->name,pTemp->password,pTemp->power);
 		pTemp = pTemp->pNext;
 	}
-	printf("保存成功\n");
 	fclose(p);
 	p = NULL;
 }

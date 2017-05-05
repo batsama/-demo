@@ -49,7 +49,10 @@ void Nav_menu(void)//登录注册页面
 			}
 				if (l == 11)
 				{
+					saveData(S_Head);
 					saveCode(P_Head);
+					FreeAc(P_Head);
+					freeLink(S_Head);
 					exit(0);
 				}
 			}
@@ -140,7 +143,77 @@ void Nav_menu(void)//登录注册页面
 		hicehandle(0);
 		switch (power)
 		{
-		case 1: //学生端。。
+		case 1:while (1)
+		    {  
+				   drawnav();
+				   Gotoxy(54, 4);
+				   printf("管理系统学生端");
+				   Gotoxy(52, 6);
+				   printf("1.查询指定学生的信息");
+				   Gotoxy(52, 7);
+				   printf("2.打印全部学生的信息");
+				   Gotoxy(52, 8);
+				   printf("3.排序学生的信息");
+				   Gotoxy(52, 9);
+				   printf("4.修改账号密码");
+				   Gotoxy(52, 10);
+				   printf("5.退出登陆");
+				   Gotoxy(52, 11);
+				   printf("6.退出程序");
+				   Gotoxy(51, l);
+				   printf("%c", 16);
+				   flag = _getch();
+				   if (flag == Down)
+				   {
+					   l++;
+					   if (l == 12)
+						   l = 6;
+				   }
+				   if (flag == Up)
+				   {
+					   l--;
+					   if (l == 5)
+						   l = 11;
+				   }
+				   if (flag == 13)
+				   {
+					   
+					   if (l == 6)
+					   {
+						   FindStu(S_Head);
+					   }
+					   if (l == 7)
+					   {
+						   print(S_Head);
+					   }
+					   if (l == 8)
+					   {
+						   S_Head = sortStu(S_Head);
+						   print(S_Head);
+					   }
+					   if (l == 9)
+					   {
+						   P_Head = rewiteCode(P_Head);
+					   }
+					   if (l == 10)
+					   {
+						   Nav_menu();
+					   }
+					   if (l == 11)
+					   {
+						   saveCode(P_Head);
+						   drawnav();
+						   Gotoxy(54, 12);
+						   printf("谢谢使用！");
+						   saveData(S_Head);
+						   saveCode(P_Head);
+						   FreeAc(P_Head);
+						   freeLink(S_Head);
+						   Sleep(2000);
+						   exit(0);
+					   }
+				   }
+	    	}		
 			break;
 		case 2: //教师端。。
 			break;
@@ -185,6 +258,31 @@ void Nav_menu(void)//登录注册页面
 				}
 				if (flag == 13)
 				{
+					if (l == 6)
+					{
+						FindStu(S_Head);
+					}
+					if (l == 7)
+					{
+						print(S_Head);
+					}
+					if (l == 8)
+					{
+						S_Head=delStu(S_Head);
+					}
+					if (l == 9)
+					{
+						S_Head=rewriteStu(S_Head);
+					}
+					if (l == 10)
+					{
+						S_Head = addStu(S_Head);
+					}
+					if (l == 11)
+					{
+						S_Head = sortStu(S_Head);
+						print(S_Head);
+					}
 					if (l == 12)
 					{
 						AC_munu();
@@ -199,6 +297,10 @@ void Nav_menu(void)//登录注册页面
 						drawnav();
 						Gotoxy(54, 12);
 						printf("谢谢使用！");
+						saveData(S_Head);
+						saveCode(P_Head);
+						FreeAc(P_Head);
+						freeLink(S_Head);
 						Sleep(2000);
 						exit(0);
 					}

@@ -116,6 +116,7 @@ int loginIn(Code* pHead) //µÇÂ¼³ÌÐò
 		{
 			Gotoxy(52,10);
 			printf("µÇÂ¼³É¹¦!");
+			hicehandle(0);
 			Sleep(1000);
 			return lookupPassword(pHead, name, password);
 		}

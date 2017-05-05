@@ -55,6 +55,8 @@ void loading(void)//加载进度条函数
 	printf("加载完成\n");
 	Gotoxy(55, 13);
 	printf("进入系统\n");
+	P_Head = loadCode(P_Head);
+	S_Head = loadData(S_Head);
 	Sleep(1000);
 	system("cls");
 	return;
