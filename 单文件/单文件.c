@@ -3,6 +3,9 @@
 #include<conio.h>
 #include<string.h>
 #include<windows.h>
+#define LODING_H
+#define LEN 25//¶¨Òå½ø¶ÈÌõ³¤¶È
+#define MENU_H
 #define Up 0x48
 #define Down 0x50
 #define Left 0x4b 
@@ -10,19 +13,19 @@
 #define Stu 1;
 #define Tea 2;
 #define adm 3;
-#define LEN 25//¶¨Òå½ø¶ÈÌõ³¤¶È
+int p;//ÉùÃ÷È¨ÏÞ£¬³õÊ¼Îª0
 typedef struct CODE
 {
-	char name[20];
-	char password[20];
+	char name[21];
+	char password[21];
 	struct CODE *pNext;
 	int power; //È¨ÏÞ
 }Code;//ÉùÃ÷×¢²áÐÅÏ¢½Úµã
 Code*  P_Head;
 typedef struct Data
 {
-	char strStuName[20];
-	char strStuNum[20];
+	char strStuName[21];
+	char strStuNum[21];
 	int strStuSorce;
 }Data; //¹¹ÔìDataÊý¾Ý½á¹¹Ìå
 typedef struct NODE
@@ -32,26 +35,10 @@ typedef struct NODE
 	struct NODE* pNext;
 }Node;   //¹¹ÔìÊý¾Ý½Úµã
 Node* S_Head;//½¨Á¢Êý¾ÝÁ´±íÍ·
-int p;//ÉùÃ÷È¨ÏÞ£¬³õÊ¼Îª0
-void Gotoxy(int x, int y);//¹â±êÒÆ¶¯
-void Drawbox(void);//»­³ö·½¿ò
-void loading(void);//¼ÓÔØ½ø¶ÈÌõº¯Êý
-void hicehandle(int i);//Òþ²Ø¹â±êÐÅÏ¢
-void drawnav(void);//»­³öÍâ±ß¿ò
-void powerLoading(int power);//½øÈë³É¼¨¹ÜÀíÏµÍ³¼ÓÔØ½ø¶ÈÌõº¯Êý 
-void Nav_menu(void);//µÇÂ¼×¢²áÒ³Ãæ
-void Loginin_menu(void);//µÇÂ½½çÃæ
-void supervisSystem(int power);//¹ÜÀíÏµÍ³½çÃæ
-Code* addCode(Code* pHead, int power); //Ôö¼ÓÒ»¸ö×¢²áÐÅÏ¢
-void saveCode(Code* pHead); //±£´æ×¢²áÐÅÏ¢
-int lookup(Code* pHead, char* name); //ÅÐ¶ÏÊÇ·ñ´æÔÚÓÃ»§
-void AC_Printf(Code* pHead);//´òÓ¡ËùÓÐÕË»§ÐÅÏ¢ 
-Code*findCode(Code* pHead, char* name);//²éÕÒÖ¸¶¨ÓÃ»§ÐÅÏ¢
-void AC_munu(void);//ÕË»§¹ÜÀí²Ëµ¥
-Code* rewiteCode(Code* pHead);//ÐÞ¸ÄÖ¸¶¨ÓÃ»§ÐÅÏ¢
-Code* AC_del(Code* pHead);//É¾³ýÖ¸¶¨ÕË»§ÐÅÏ¢
-Code* AC_Free(Code* pHead);//Çå¿ÕÕË»§ÐÅÏ¢
-Code* FreeAc(Code* pHead);//Çå¿ÕÁ´±í
+Code* loadCode(Code* pHead);  //¶ÁÈ¡×¢²áÐÅÏ¢
+int loginIn(Code* pHead);//µÇÂ¼³ÌÐò
+int lookupPassword(Code* pHead, char* name, char * password); //²éÑ¯Ö¸¶¨ÕË»§ÃÜÂëÊÇ·ñÕýÈ· 
+Code* P_Ac; //µÇÂ½ÕËºÅÐÅÏ¢
 Node* loadData(Node* pHead);//´ÓÎÄ¼þÖÐ¶ÁÈ¡Ñ§ÉúµÄÐÅÏ¢
 void print(Node* pHead);//´òÓ¡È«²¿ÄÚÈÝ
 void saveData(Node* pHead);//±£´æÑ§ÉúÐÅÏ¢µ½ÎÄ¼þÖÐ
@@ -63,10 +50,27 @@ Node* addStu(Node*pHead);//Ìí¼ÓÑ§ÉúÐÅÏ¢
 int lookupStu(Node* pHead, char* name); //ÅÐ¶ÏÊÇ·ñ´æÔÚÑ§Éú
 Node* delStu(Node* pHead);//Êä³öÖ¸¶¨Ñ§ÉúÐÅÏ¢
 Node* sortStu(Node* pHead);//Ã°ÅÝÅÅÐò ÓÉÐ¡µ½´ó
-Code* loadCode(Code* pHead);  //¶ÁÈ¡×¢²áÐÅÏ¢
-int loginIn(Code* pHead);//µÇÂ¼³ÌÐò
-int lookupPassword(Code* pHead, char* name, char * password); //²éÑ¯Ö¸¶¨ÕË»§ÃÜÂëÊÇ·ñÕýÈ· 
-Code* P_Ac; //µÇÂ½ÕËºÅÐÅÏ¢
+void AC_Printf(Code* pHead);//´òÓ¡ËùÓÐÕË»§ÐÅÏ¢ 
+Code*findCode(Code* pHead, char* name);//²éÕÒÖ¸¶¨ÓÃ»§ÐÅÏ¢
+void AC_munu(void);//ÕË»§¹ÜÀí²Ëµ¥
+Code* rewiteCode(Code* pHead);//ÐÞ¸ÄÖ¸¶¨ÓÃ»§ÐÅÏ¢
+Code* AC_del(Code* pHead);//É¾³ýÖ¸¶¨ÕË»§ÐÅÏ¢
+Code* AC_Free(Code* pHead);//Çå¿ÕÕË»§ÐÅÏ¢
+Code* FreeAc(Code* pHead);//Çå¿ÕÁ´±í
+void fetchstr(char* str, int num);//¶ÁÈ¡×Ö·û´®º¯Êý
+void fetchpas(char* str, int num);//¶ÁÈ¡ÃÜÂëº¯Êý
+Code* addCode(Code* pHead, int power); //Ôö¼ÓÒ»¸ö×¢²áÐÅÏ¢
+void saveCode(Code* pHead); //±£´æ×¢²áÐÅÏ¢
+int lookup(Code* pHead, char* name); //ÅÐ¶ÏÊÇ·ñ´æÔÚÓÃ»§
+void Nav_menu(void);//µÇÂ¼×¢²áÒ³Ãæ
+void Loginin_menu(void);//µÇÂ½½çÃæ
+void supervisSystem(int power);//¹ÜÀíÏµÍ³½çÃæ
+void Gotoxy(int x, int y);//¹â±êÒÆ¶¯
+void Drawbox(void);//»­³ö·½¿ò
+void loading(void);//¼ÓÔØ½ø¶ÈÌõº¯Êý
+void hicehandle(int i);//Òþ²Ø¹â±êÐÅÏ¢
+void drawnav(void);//»­³öÍâ±ß¿ò
+void powerLoading(int power);//½øÈë³É¼¨¹ÜÀíÏµÍ³¼ÓÔØ½ø¶ÈÌõº¯Êý 
 int main(void)
 {
 	system("color F9");
@@ -79,8 +83,8 @@ Code* loadCode(Code* pHead)  //¶ÁÈ¡×¢²áÐÅÏ¢
 	FILE * p = NULL;
 	Code *pTemp = NULL;
 	Code* pNew = NULL;
-	char name[20];
-	char password[20];
+	char name[21];
+	char password[21];
 	int power;
 	p = fopen("register.txt", "r+ ");
 	if (p == NULL)
@@ -145,10 +149,12 @@ int lookupPassword(Code* pHead, char* name, char * password) //²éÑ¯Ö¸¶¨ÕË»§ÃÜÂëÊ
 int loginIn(Code* pHead) //µÇÂ¼³ÌÐò
 {
 	Code* pTemp = NULL;
-	char name[20];
-	char password[20];
+	char name[21];
+	char password[21];
 	char ch;
+	int l=17;
 	int p=0, flog = 1, n;
+	int flag;
 	if (pHead == NULL)
 	{
 		drawnav();
@@ -164,30 +170,14 @@ int loginIn(Code* pHead) //µÇÂ¼³ÌÐò
 		Gotoxy(52, 1);
 		printf("ÇëÊäÈëÕËºÅÐÅÏ¢:\n");
 		Gotoxy(52, 4);
-		printf("ÕËºÅ:          \b\b\b\b\b\b\b\b\b\b");
+		printf("ÕËºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 		Gotoxy(52, 6);
-		printf("ÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
+		printf("ÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 		Gotoxy(57, 4);
-		scanf_s("%s", name,20);
+		fetchstr(name, 21);
 		Gotoxy(57, 6);
-		printf("          \b\b\b\b\b\b\b\b\b\b");
-		while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-		{
-			if (ch == 8)
-			{
-				putchar('\b');
-				putchar(' ');
-				putchar('\b');
-				if (p>0)
-					p--;
-			}
-			if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-				continue;
-			putchar('*');
-			password[p++] = ch;//±£´æÃÜÂë 
-		}
-		password[p] = '\0';//×Ö·û´®½áÎ² 
-		p = 0;
+		printf("                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		fetchpas(password, 19);
 		if (lookupPassword(pHead, name, password) > 0)
 		{
 			Gotoxy(52,10);
@@ -200,30 +190,47 @@ int loginIn(Code* pHead) //µÇÂ¼³ÌÐò
 			flog = 1;
 		Gotoxy(48, 15);
 		printf("ÕËºÅ»òÃÜÂë´íÎó!\n");
-		Gotoxy(48, 16);
-		printf("1.ÖØÊÔ 2.ÍË³öµÇÂ¼\n");
-		while (flog)
-		{
+		hicehandle(0);
+		while (1)
+		{   
+			Gotoxy(46, 17);
+			printf("  \b");
+			Gotoxy(46, 18);
+			printf("  \b");
+			Gotoxy(48, 16);
+			printf("ÇëÑ¡Ôñ:");
 			Gotoxy(48, 17);
-			printf(" \b");
-			if (scanf("%d", &n) != 1)
+			printf("1,ÖØÐÂµÇÂ¼");
+			Gotoxy(48, 18);
+			printf("2.·µ»Ø");
+			Gotoxy(47,l);
+			printf("%c", 16);
+			flag = _getch();
+			if (flag == Down)
 			{
-				continue;
+				l++;
+				if (l == 19)
+					l = 17;
 			}
-			switch (n)
+			if (flag == Up)
 			{
-			case 1:
-				flog = 0;
-				break;
-			case 2:
-				flog = 0;
-				return 0;
-				break;
-			default:
-				Gotoxy(68,16);
-				printf("ÇëÊäÈëÕýÈ·Ö¸Áî\n");
+				l--;
+				if (l == 16)
+					l = 18;
+			}
+			if (flag == 13)
+			{
+				if (l == 17)
+				{
+					break;
+				}
+				if (l == 18)
+				{
+					return;
+				}
 			}
 		}
+		hicehandle(1);
 		drawnav();
 	}
 }
@@ -418,10 +425,10 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 {
 	int flag, flog1 = 1, flog2 = 1, power = 0, l = 9;
 	char ch;
-	char name[20];
-	char newName[20];//ÐÂÃû×Ö
-	char newPassword[20];//ÐÂÃÜÂë
-	char psw[20];//ÖØ¸´ÊäÈëÃÜÂë
+	char name[21];
+	char newName[21];//ÐÂÃû×Ö
+	char newPassword[21];//ÐÂÃÜÂë
+	char psw[21];//ÖØ¸´ÊäÈëÃÜÂë
 	Code* pTemp = NULL;
 	if (P_Ac->power == 3)
 	{
@@ -437,7 +444,7 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 		Gotoxy(45, 10);
 		printf("ÇëÊäÈëÕË»§ÕËºÅ:");
 		hicehandle(1);
-		scanf_s("%s", name, 20);
+		fetchstr(name, 20);
 		pTemp = findCode(pHead, name);
 		if (pTemp == NULL)
 		{
@@ -481,19 +488,19 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 					{
 						drawnav();
 						Gotoxy(45, 4);
-						printf("ÇëÊäÈëÐÂÕËºÅ:          \b\b\b\b\b\b\b\b\b\b");
+						printf("ÇëÊäÈëÐÂÕËºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 						hicehandle(1);
-						scanf_s("%s", newName, 20);
+						fetchstr(newName, 20);
 						hicehandle(0);
 						if (lookup(pHead, newName) == 0) //ÅÐ¶ÏÊÇ·ñ´æÔÚÓÃ»§ 
 						{
 							flog1 = 0;
-							Gotoxy(70, 4);
+							Gotoxy(20, 4);
 							printf("¸ÃÕËºÅ¿ÉÒÔÊ¹ÓÃ!            ");
 						}
 						else
 						{
-							Gotoxy(70, 4);
+							Gotoxy(20, 4);
 							printf("¸ÃÕËºÅÒÑ¾­×¢²á¹ý,ÇëÖØÐÂÊäÈë");
 							Sleep(1000);
 							continue;
@@ -513,43 +520,11 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 						drawnav();
 						hicehandle(1);
 						Gotoxy(45, 4);
-						printf("ÇëÊäÈëÐÂÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
-						while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-						{
-							if (ch == 8)
-							{
-								putchar('\b');
-								putchar(' ');
-								putchar('\b');
-								if (p > 0)
-									p--;
-							}
-							if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-								continue;
-							putchar('*');
-							newPassword[p++] = ch;//±£´æÃÜÂë 
-						}
-						newPassword[p] = '\0';//×Ö·û´®½áÎ²
-						p = 0;
+						printf("ÇëÊäÈëÐÂÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						fetchstr(newPassword, 19);
 						Gotoxy(43, 6);
-						printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
-						while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-						{
-							if (ch == 8)
-							{
-								putchar('\b');
-								putchar(' ');
-								putchar('\b');
-								if (p > 0)
-									p--;
-							}
-							if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-								continue;
-							putchar('*');
-							psw[p++] = ch;//±£´æÃÜÂë 
-						}
-						psw[p] = '\0';//×Ö·û´®½áÎ²
-						p = 0;
+						printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						fetchstr(psw, 19);
 						hicehandle(0);
 						if (strcmp(newPassword, psw) == 0)
 						{
@@ -557,7 +532,7 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 						}
 						else
 						{
-							Gotoxy(70, 6);
+							Gotoxy(20, 6);
 							printf("¶þ´ÎÃÜÂëÊäÈë´íÎó,ÇëÖØÐÂÊäÈë");
 							Sleep(500);
 						}
@@ -673,19 +648,19 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 					{
 						drawnav();
 						Gotoxy(45, 4);
-						printf("ÇëÊäÈëÐÂÕËºÅ:          \b\b\b\b\b\b\b\b\b\b");
+						printf("ÇëÊäÈëÐÂÕËºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 						hicehandle(1);
-						scanf_s("%s", newName, 20);
+						fetchpas(newName, 20);
 						hicehandle(0);
 						if (lookup(pHead, newName) == 0) //ÅÐ¶ÏÊÇ·ñ´æÔÚÓÃ»§ 
 						{
 							flog1 = 0;
-							Gotoxy(70, 4);
+							Gotoxy(20, 4);
 							printf("¸ÃÕËºÅ¿ÉÒÔÊ¹ÓÃ!            ");
 						}
 						else
 						{
-							Gotoxy(70, 4);
+							Gotoxy(20, 4);
 							printf("¸ÃÕËºÅÒÑ¾­×¢²á¹ý,ÇëÖØÐÂÊäÈë");
 							Sleep(1000);
 							continue;
@@ -704,43 +679,11 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 						drawnav();
 						hicehandle(1);
 						Gotoxy(45, 4);
-						printf("ÇëÊäÈëÐÂÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
-						while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-						{
-							if (ch == 8)
-							{
-								putchar('\b');
-								putchar(' ');
-								putchar('\b');
-								if (p > 0)
-									p--;
-							}
-							if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-								continue;
-							putchar('*');
-							newPassword[p++] = ch;//±£´æÃÜÂë 
-						}
-						newPassword[p] = '\0';//×Ö·û´®½áÎ²
-						p = 0;
+						printf("ÇëÊäÈëÐÂÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						fetchpas(newPassword, 19);
 						Gotoxy(43, 6);
-						printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
-						while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-						{
-							if (ch == 8)
-							{
-								putchar('\b');
-								putchar(' ');
-								putchar('\b');
-								if (p > 0)
-									p--;
-							}
-							if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-								continue;
-							putchar('*');
-							psw[p++] = ch;//±£´æÃÜÂë 
-						}
-						psw[p] = '\0';//×Ö·û´®½áÎ²
-						p = 0;
+						printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						fetchpas(psw, 19);
 						hicehandle(0);
 						if (strcmp(newPassword, psw) == 0)
 						{
@@ -748,7 +691,7 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 						}
 						else
 						{
-							Gotoxy(70, 6);
+							Gotoxy(20, 6);
 							printf("¶þ´ÎÃÜÂëÊäÈë´íÎó,ÇëÖØÐÂÊäÈë");
 							Sleep(500);
 						}
@@ -770,7 +713,7 @@ Code* rewiteCode(Code* pHead)//ÐÞ¸ÄÖ¸¶¨ÕË»§µÄÐÅÏ¢
 }
 Code* AC_del(Code* pHead)//É¾³ýÖ¸¶¨ÕË»§ÐÅÏ¢
 { 
-	char name[20];
+	char name[21];
 	Code* pCurrent = NULL;
 	Code* pTemp = NULL;
 	int flag;
@@ -787,7 +730,7 @@ Code* AC_del(Code* pHead)//É¾³ýÖ¸¶¨ÕË»§ÐÅÏ¢
 	Gotoxy(45, 10);
 	printf("ÇëÊäÈëÕË»§ÕËºÅ:");
 	hicehandle(1);
-	scanf_s("%s", name, 20);
+	fetchstr(name, 20);
 	hicehandle(0);
 	pTemp = findCode(pHead, name);
 	if (pTemp == NULL)
@@ -940,13 +883,75 @@ Code* FreeAc(Code* pHead)//Çå¿ÕÁ´±í
 	}
 	  return pHead;
 }
+void fetchstr(char* str, int num)//¶ÁÈ¡×Ö·û´®º¯Êý
+{
+	int i = 0;
+	char ch;
+	while (1)
+	{
+		ch = _getch();
+		if (ch == ' ')
+		{
+			continue;
+		}
+		if (ch == 8 && i>0)
+		{
+			putchar('\b');
+			putchar(' ');
+			putchar('\b');
+			if (i>0)
+				i--;
+			continue;
+		}
+		if (i == num || ch == 13)
+		{
+			str[i] = '\0';
+			break;
+		}
+		printf("%c", ch);
+		str[i] = ch;
+		i++;
+	}
+	return ;
+}
+void fetchpas(char* str, int num)//¶ÁÈ¡ÃÜÂëº¯Êý
+{
+	int i = 0;
+	char ch;
+	while (1)
+	{
+		ch = _getch();
+		if (ch == ' ')
+		{
+			continue;
+		}
+		if (ch == 8 && i>0)
+		{
+			putchar('\b');
+			putchar(' ');
+			putchar('\b');
+			if (i>0)
+				i--;
+			continue;
+		}
+		if (i == num || ch == 13)
+		{
+			str[i] = '\0';
+			break;
+		}
+		printf("*");
+		str[i] = ch;
+		i++;
+	}
+	return;
+}
 Node* loadData(Node* pHead)//´ÓÎÄ¼þÖÐ¶ÁÈ¡Ñ§ÉúµÄÐÅÏ¢
 {
 	FILE *p = fopen("dat.txt", "r+");
 	Node *pTemp = NULL;
 	Node *pNew = NULL;
-	char strname[20];
-	char strnum[20];
+	char strname[21];
+	char strnum[21];
 	int sorce;
 	if (p != NULL)
 	{
@@ -1110,7 +1115,7 @@ Node* freeLink(Node* pHead) //Çå¿ÕÑ§ÉúÐÅÏ¢
 Node* FindStu(Node* pHead)//²éÕÒÖ¸¶¨Ñ§ÉúµÄÐÅÏ¢
 {
 	Node* pTemp = NULL;
-	char str[20];
+	char str[21];
 	if (pHead == NULL)
 	{
 		drawnav();
@@ -1124,7 +1129,7 @@ Node* FindStu(Node* pHead)//²éÕÒÖ¸¶¨Ñ§ÉúµÄÐÅÏ¢
 		Gotoxy(45,10);
 		hicehandle(1);
 		printf("ÇëÊäÈëÒª²éÕÒµÄÑ§ÉúµÄÑ§ºÅ:");
-		scanf("%s", str);
+		fetchstr(str, 20);
 		hicehandle(0);
 		if (strNum(str))
 		{
@@ -1185,7 +1190,7 @@ Node* rewriteStu(Node*pHead)
 	Node* pTemp = NULL;
 	Node* pStu = NULL;
 	int l =10 , flag;
-	char stuNum[20];
+	char stuNum[21];
 	if (pHead == NULL)
 	{
 		drawnav();
@@ -1235,7 +1240,7 @@ Node* rewriteStu(Node*pHead)
 						Gotoxy(48, 10);
 						printf("ÇëÊäÈëÐÞ¸ÄºóµÄÐÕÃû:");
 						hicehandle(1);
-						scanf("%s", pTemp->data.strStuName);
+						fetchstr(pTemp->data.strStuName, 20);
 						hicehandle(0);
 						drawnav();
 						Gotoxy(53, 10);
@@ -1250,7 +1255,7 @@ Node* rewriteStu(Node*pHead)
 							Gotoxy(48, 10);
 							printf("ÇëÊäÈëÐÞ¸ÄºóµÄÑ§ºÅ:");
 							hicehandle(1);
-							scanf("%s", stuNum);
+							fetchstr(stuNum, 20);
 							while (1)
 							{
 								if (lookupStu(pHead, stuNum) == 1)
@@ -1260,14 +1265,12 @@ Node* rewriteStu(Node*pHead)
 								else
 								{
 
-									Gotoxy(70, 10);
+									Gotoxy(20, 10);
 									printf("Ñ§ºÅÒÑ´æÔÚÇëÖØÐÂÊäÈë£¡");
 									Gotoxy(48, 10);
-									printf("ÇëÊäÈëÐÞ¸ÄºóµÄÑ§ºÅ:        \b\b\b\b\b\b\b\b");
-									scanf("%s", stuNum);
+									printf("ÇëÊäÈëÐÞ¸ÄºóµÄÑ§ºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+									fetchstr(stuNum, 20);
 								}
-								Gotoxy(99, 20);
-								printf("haha");
 							}
 							hicehandle(0);
 							if (strNum(stuNum) == 1)
@@ -1366,9 +1369,9 @@ Node* addStu(Node*pHead)//Ìí¼ÓÑ§ÉúÐÅÏ¢
 			printf("Ñ§Éú³É¼¨:");
 			Gotoxy(60, 12);
 			hicehandle(1);
-			scanf("%s", pNew->data.strStuName);
+			fetchstr(pNew->data.strStuName, 20);
 			Gotoxy(60, 13);
-			scanf("%s", pNew->data.strStuNum);
+			fetchstr(pNew->data.strStuNum, 20);
 			while (1)
 			{ 
 				if (lookupStu(pHead,pNew->data.strStuNum) == 1)
@@ -1377,11 +1380,11 @@ Node* addStu(Node*pHead)//Ìí¼ÓÑ§ÉúÐÅÏ¢
 				}
 				else
 				{
-					Gotoxy(70, 13);
+					Gotoxy(20, 13);
 					printf("Ñ§ºÅÒÑ´æÔÚÇëÖØÐÂÊäÈë£¡");
 					Gotoxy(50, 13);
-					printf("Ñ§ÉúÑ§ºÅ:         \b\b\b\b\b\b\b\b");
-					scanf("%s", pNew->data.strStuNum);
+					printf("Ñ§ÉúÑ§ºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+					fetchstr(pNew->data.strStuNum, 20);
 				}
 				
 			}
@@ -1507,9 +1510,9 @@ Node* addStu(Node*pHead)//Ìí¼ÓÑ§ÉúÐÅÏ¢
 				printf("Ñ§Éú³É¼¨:");
 				Gotoxy(60, 12);
 				hicehandle(1);
-				scanf("%s", pNew->data.strStuName);
+				fetchstr(pNew->data.strStuName, 20);
 				Gotoxy(60, 13);
-				scanf("%s", pNew->data.strStuNum);
+				fetchstr(pNew->data.strStuNum, 20);
 				while (1)
 				{
 					if (lookupStu(pHead, pNew->data.strStuNum) == 1)
@@ -1518,11 +1521,11 @@ Node* addStu(Node*pHead)//Ìí¼ÓÑ§ÉúÐÅÏ¢
 					}
 					else
 					{
-						Gotoxy(70, 13);
+						Gotoxy(20, 13);
 						printf("Ñ§ºÅÒÑ´æÔÚÇëÖØÐÂÊäÈë£¡");
 						Gotoxy(50, 13);
-						printf("Ñ§ÉúÑ§ºÅ:         \b\b\b\b\b\b\b\b");
-						scanf("%s", pNew->data.strStuNum);
+						printf("Ñ§ÉúÑ§ºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+						fetchstr(pNew->data.strStuNum, 20);
 					}
 
 				}
@@ -1786,8 +1789,8 @@ void Nav_menu(void)//µÇÂ¼×¢²áÒ³Ãæ
 			}
 	}
 }
-void Loginin_menu(void)//×¢²áÒ³Ãæ
-{
+	void Loginin_menu(void)//×¢²áÒ³Ãæ
+	{
 		int flag;
 		int l = 9;
 		hicehandle(0);
@@ -1864,7 +1867,7 @@ void Loginin_menu(void)//×¢²áÒ³Ãæ
 			}
 		}
 	}
-void supervisSystem(int power)//¹ÜÀíÏµÍ³½çÃæ
+	void supervisSystem(int power)//¹ÜÀíÏµÍ³½çÃæ
 	{
 		int flag;
 		int l=6;
@@ -2161,77 +2164,43 @@ Code* addCode(Code* pHead, int power)
 		case 3: printf("ÇëÊäÈë¹ÜÀíÔ±×¢²áÐÅÏ¢;");
 		}
 		Gotoxy(52, 4);
-     	printf("ÕËºÅ:          \b\b\b\b\b\b\b\b\b\b");
+     	printf("ÕËºÅ:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 		Gotoxy(52, 6);
-		printf("ÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
+		printf("ÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 		Gotoxy(57, 4);
-		scanf_s("%s", pNew->name, 20);
+		fetchstr(pNew->name, 20);
 		if (lookup(pHead, pNew->name) == 0) //ÅÐ¶ÏÊÇ·ñ´æÔÚÓÃ»§ 
 		{
 			flog1 = 0;
-			Gotoxy(70, 4);
+			Gotoxy(20, 4);
 			printf("¸ÃÕËºÅ¿ÉÒÔÊ¹ÓÃ!            ");
 		}
 		else
 		{
-			Gotoxy(70, 4);
+			Gotoxy(20, 4);
 			printf("¸ÃÕËºÅÒÑ¾­×¢²á¹ý,ÇëÖØÐÂÊäÈë");
 			continue;
 		}
 		while (flog2)
 		{
-			Gotoxy(57, 6);
-			printf("          \b\b\b\b\b\b\b\b\b\b");
-			while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-			{
-				if (ch == 8)
-				{
-					putchar('\b');
-					putchar(' ');
-					putchar('\b');
-					if (p>0)
-						p--;
-				}
-				if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-					continue;
-				putchar('*');
-				pNew->password[p++] = ch;//±£´æÃÜÂë 
-			}
-			pNew->password[p] = '\0';//×Ö·û´®½áÎ²
-			p = 0;
+			Gotoxy(58, 6);
+			printf("                   \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+			fetchpas(pNew->password, 19);
 			Gotoxy(42, 8);
-			printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
-			while ((ch = _getch()) != '\r')//ÅÐ¶ÏÊÇ·ñÎª»Ø³µ
-			{
-				if (ch == 8)
-				{
-					putchar('\b');
-					putchar(' ');
-					putchar('\b');
-					if (p>0)
-						p--;
-				}
-				if (!isdigit(ch) && !isalpha(ch))//ÅÐ¶ÏÊÇ·ñÊÇÊý×Ö»ò×Ö·û´®
-					continue;
-				putchar('*');
-				psw[p++] = ch;//±£´æÃÜÂë 
-			}
-			psw[p] = '\0';//×Ö·û´®½áÎ²
-			p = 0;
+			printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+			fetchpas(psw, 19);
 			if (strcmp(pNew->password, psw) == 0)
 			{
 				flog2 = 0;
 			}
 			else
 			{
-				Gotoxy(70, 8);
+				Gotoxy(10, 8);
 				printf("¶þ´ÎÃÜÂëÊäÈë´íÎó,ÇëÖØÐÂÊäÈë");
 				Sleep(500);
 				Gotoxy(42, 8);
-				printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:          \b\b\b\b\b\b\b\b\b\b");
+				printf("ÇëÔÙ´ÎÊäÈëÃÜÂë:                    \b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 			}                                      
-			Gotoxy(70, 8);
-			printf("                           ");
 		}
 	}
 	pNew->power = power;
