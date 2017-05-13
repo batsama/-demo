@@ -894,11 +894,14 @@ void fetchstr(char* str, int num)//¶ÁÈ¡×Ö·û´®º¯Êý
 		{
 			continue;
 		}
-		if (ch == 8 && i>0)
+		if (ch == 8)
 		{
+			if(i!=0)
+			{
 			putchar('\b');
 			putchar(' ');
 			putchar('\b');
+		    }
 			if (i>0)
 				i--;
 			continue;
@@ -925,11 +928,14 @@ void fetchpas(char* str, int num)//¶ÁÈ¡ÃÜÂëº¯Êý
 		{
 			continue;
 		}
-		if (ch == 8 && i>0)
+		if (ch == 8)
 		{
+				if(i!=0)
+			{
 			putchar('\b');
 			putchar(' ');
 			putchar('\b');
+		    }
 			if (i>0)
 				i--;
 			continue;
